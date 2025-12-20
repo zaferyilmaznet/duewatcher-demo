@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DueWatcher | Never miss a deadline</title>
+
+    <meta name="theme-color" content="#1976d2" />
+    <meta
+      name="description"
+      content="DueWatcher helps you track bills, tasks, and deadlines offline. Simple, private, and fast."
+    />
+
+    <!-- PWA Manifest + icon hooks -->
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/dw-icon-192.png" type="image/png" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <!-- ========== HEADER ========== -->
+    <header>
+      <h1>📅 DueWatcher</h1>
+      <p class="tagline">
+        Track deadlines, payments & important dates — privately, offline.
+      </p>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main>
+      <!-- ---- Summary Section ---- -->
+      <section id="summary" aria-label="Summary overview"></section>
+
+      <!-- ---- Add / Edit Due Form ---- -->
+      <section id="form-section">
+        <button id="toggle-form-btn" class="btn primary">+</button>
+
+        <form id="due-form" autocomplete="off">
+          <h2>Add a Due Item</h2>
+          <!-- Title -->
+          <input
+            id="title"
+            type="text"
+            name="title"
+            placeholder="Enter due title"
+            required
+          />
+
+          <!-- Category -->
+          <select id="category">
+            <option value="project">Project</option>
+            <option value="finance">Finance</option>
+            <option value="personal">Personal</option>
+            <option value="other">Other</option>
+          </select>
+
+          <!-- Due date -->
+          <input id="dueDate" type="date" required />
+
+          <!-- Optional amount -->
+          <input
+            id="amount"
+            type="number"
+            placeholder="Amount (optional)"
+            step="0.01"
+          />
+
+          <!-- Priority -->
+          <select id="priority">
+            <option value="high">🔴 High priority</option>
+            <option value="medium" selected>🟠 Medium priority</option>
+            <option value="low">🟢 Low priority</option>
+          </select>
+
+          <!-- Form buttons -->
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Add Due</button>
+            <button
+              type="button"
+              id="cancel-edit"
+              class="btn secondary"
+              style="display: none"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ---- Due List ---- -->
+      <section id="due-list-section">
+        <h2>Your Dues</h2>
+        <ul id="due-list"></ul>
+        <p
+          id="empty-note"
+          class="muted"
+          aria-live="polite"
+          style="text-align: center"
+        >
+          Nothing yet — add your first due!
+        </p>
+      </section>
+
+      <!-- ---- Settings ---- -->
+      <section id="settings-section">
+        <div class="settings-intro">
+          <h3>Settings & Tools</h3>
+          <p>Customize your DueWatcher experience.</p>
+        </div>
+
+        <!-- Reminder options -->
+        <label>
+          <input type="checkbox" id="notify-enabled" /> Enable reminders
+        </label>
+        <label>
+          Remind me
+          <input type="number" id="notify-days" min="1" max="30" value="3" />
+          days before due
+        </label>
+
+        <div class="settings-actions">
+          <!-- Notification permission + test -->
+          <button id="request-permission" class="btn secondary">
+            🔔 Request Notification Permission
+          </button>
+          <button id="test-notify" class="btn secondary">
+            🧪 Test Notification
+          </button>
+
+          <!-- Data Management -->
+          <button id="clear-data" class="btn danger">🗑️ Clear All Data</button>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="btn secondary">
+            🌓 Toggle Theme
+          </button>
+        </div>
+      </section>
+
+      <!-- ---- Floating Add Button (for mobile quick-add) ---- -->
+      <button id="fab-add" class="fab" title="Add new due">+</button>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+      <h3>📅 DueWatcher</h3>
+      <p>
+        A simple, private due & deadline reminder — free to use. No accounts.
+        Built with care for your privacy.
+      </p>
+      <p>Made with ❤️ by <strong>Zafer Yilmaz</strong>.</p>
+      <p>
+        ☕ Like this project?
+        <a
+          href="https://buymeacoffee.com/zaferyilmaz"
+          target="_blank"
+          rel="noopener"
+          >Buy me a coffee</a
+        >.
+      </p>
+      <p class="other-projects">
+        ✨ Explore my other projects:
+        <a
+          href="https://goaltica-demo.vercel.app/"
+          target="_blank"
+          rel="noopener"
+        >
+          Goaltica
+        </a>
+      </p>
+      <p class="footer-meta">
+        &copy; 2025
+        <a href="https://zaferyilmaz.dev" target="_blank" rel="noopener"
+          >Zafer Yilmaz</a
+        >
+        · All rights reserved. DueWatcher demo v.1
+      </p>
+      <p class="privacy-note">
+        🔒 Your data are stored locally in your browser. Nothing leaves your
+        device.
+      </p>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

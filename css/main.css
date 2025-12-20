@@ -1,0 +1,544 @@
+/* ==========================================================
+   DueWatcher demo v1 — Main Stylesheet
+   Author: Zafer Yilmaz
+   Description:
+     - Mobile-first, offline-friendly PWA layout
+     - Plain but functional design
+     - Light & dark themes
+     - Focus on clarity, spacing, and accessibility
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. UNIVERSAL RESET
+   ---------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------------------------
+   2. ROOT VARIABLES — LIGHT THEME DEFAULT
+   ---------------------------------------------------------- */
+:root {
+  --primary: #1976d2;
+  --secondary: #555;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --text: #222;
+  --text-muted: #666;
+  --border: #ddd;
+  --radius: 0.5rem;
+  --max-width: 720px;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --hover-bg: #f8f9fa;
+}
+
+/* ----------------------------------------------------------
+   3. DARK THEME OVERRIDES
+   ---------------------------------------------------------- */
+[data-theme="dark"] {
+  --primary: #64b5f6;
+  --secondary: #bbb;
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --text: #eee;
+  --text-muted: #aaa;
+  --border: #333;
+  --shadow: rgba(255, 255, 255, 0.05);
+  --hover-bg: #2a2a2a;
+}
+
+/* ----------------------------------------------------------
+   4. GLOBAL LAYOUT
+   ---------------------------------------------------------- */
+body {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Center main content and limit width */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+/* ----------------------------------------------------------
+   5. HEADER
+   ---------------------------------------------------------- */
+header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+  font-variant: small-caps;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: var(--primary);
+}
+header .tagline {
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+/* ----------------------------------------------------------
+   6. SUMMARY SECTION
+   ---------------------------------------------------------- */
+
+.summary {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--shadow);
+  padding: 0.7rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.summary-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mobile: 2 columns */
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Horizontal item layout */
+.summary-item {
+  display: flex;
+  flex-direction: row; /* ← horizontal layout */
+  align-items: center; /* vertical alignment */
+  justify-content: center; /* centered group */
+  flex-wrap: wrap;
+
+  gap: 0.5rem; /* spacing between emoji, number, label */
+
+  padding: 0.5rem;
+  background: var(--surface);
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.summary-item .emoji {
+  font-size: 1.1rem;
+}
+
+.summary-item strong {
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.summary-item small {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ============================
+   Tablet: 4 items per row
+   Financial items row 2
+   ============================ */
+@media (min-width: 600px) {
+  .summary-card {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Paid + Unpaid move to second row */
+  .summary-item:nth-child(5),
+  .summary-item:nth-child(6) {
+    grid-column: span 2; /* Wide items */
+  }
+}
+
+/* ----------------------------------------------------------
+   7. FORM SECTION
+   ---------------------------------------------------------- */
+#form-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--shadow);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centers horizontally */
+}
+
+#toggle-form-btn {
+  font-size: 1.2rem;
+  align-self: center;
+  border-radius: 50%;
+}
+
+#due-form {
+  display: none; /* hidden by default — toggled via JS */
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+#due-form.active {
+  display: flex;
+}
+#due-form h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Inputs */
+input,
+select {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 0.5rem;
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+select {
+  cursor: pointer;
+}
+
+/* Form buttons */
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* temporary attention highlight when editing an item */
+#due-form.highlight {
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.08);
+  transition: box-shadow 0.25s ease;
+}
+
+/* ----------------------------------------------------------
+   8. BUTTONS
+   ---------------------------------------------------------- */
+.btn {
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s, border 0.2s;
+}
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn.primary:hover {
+  opacity: 0.9;
+}
+.btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+[data-theme="dark"] .btn.secondary {
+  background: #1c1c1c;
+  border-color: #444;
+  color: #eee;
+}
+.btn.secondary:hover {
+  background: var(--surface);
+}
+.btn.danger {
+  background: #e53935;
+  color: #fff;
+}
+.btn.danger:hover {
+  opacity: 0.85;
+}
+
+/* ----------------------------------------------------------
+   9. DUE LIST SECTION
+   ---------------------------------------------------------- */
+#due-list-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--shadow);
+  padding: 1rem;
+}
+#due-list-section h2 {
+  margin-bottom: 1rem;
+}
+#due-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.due-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  transition: background 0.2s;
+}
+
+.due-item:hover {
+  background: var(--hover-bg);
+}
+
+.due-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.due-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.toggle-btn,
+.edit-btn,
+.delete-btn {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.due-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.toggle-btn,
+.edit-btn,
+.delete-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+/* Hover & focus feedback */
+.toggle-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover,
+.toggle-btn:focus,
+.edit-btn:focus,
+.delete-btn:focus {
+  background: var(--surface);
+  transform: translateY(-1px);
+}
+
+/* Individual color cues */
+.toggle-btn {
+  color: var(--accent);
+}
+
+.edit-btn {
+  color: #f59e0b; /* amber tone */
+}
+
+.delete-btn {
+  color: #ef4444; /* red tone */
+}
+
+/* Dark mode tweak (so hover stands out) */
+[data-theme="dark"] .toggle-btn:hover,
+[data-theme="dark"] .edit-btn:hover,
+[data-theme="dark"] .delete-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Accessibility: focus ring */
+.toggle-btn:focus-visible,
+.edit-btn:focus-visible,
+.delete-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Due item color indicators */
+.due-item.overdue {
+  border-left: 4px solid #e53935;
+}
+.due-item.soon {
+  border-left: 4px solid #fbc02d;
+}
+.due-item.done {
+  border-left: 4px solid #43a047;
+  opacity: 0.7;
+}
+
+.due-date {
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+/* Inherited from parent list item */
+li.overdue .due-date {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #d00;
+}
+
+li.soon .due-date {
+  background-color: rgba(255, 165, 0, 0.15);
+  color: #b35a00;
+}
+
+li.done .due-info,
+li.done .due-date,
+li.done strong {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* Neutral due dates (not soon, not overdue, not done) */
+li:not(.overdue):not(.soon):not(.done) .due-date {
+  color: var(--text-secondary);
+  background-color: rgba(0, 0, 0, 0.07); /* very light gray */
+  opacity: 0.9;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+.due-amount {
+  font-family: monospace;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.due-meta {
+  text-transform: capitalize;
+  font-size: 0.8rem;
+}
+
+/* ----------------------------------------------------------
+   10. SETTINGS SECTION
+   ---------------------------------------------------------- */
+#settings-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--shadow);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  font-family: "Courier New", Courier, monospace;
+  margin-bottom: 0.5rem;
+}
+.settings-intro {
+  margin-bottom: 1rem;
+}
+.settings-intro p {
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* ----------------------------------------------------------
+   11. FLOATING ACTION BUTTON (Mobile Quick Add)
+   ---------------------------------------------------------- */
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  width: 3.3rem;
+  height: 3.3rem;
+  font-size: 1.8rem;
+  line-height: 3.2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+  box-shadow: 0 3px 6px var(--shadow);
+}
+
+/* ----------------------------------------------------------
+   12. FOOTER
+   ---------------------------------------------------------- */
+footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--secondary);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  padding: 1.5rem 1rem;
+}
+
+footer h3 {
+  font-variant: small-caps;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: var(--primary);
+}
+
+/* ----------------------------------------------------------
+   13. RESPONSIVE ADJUSTMENTS
+   ---------------------------------------------------------- */
+@media (min-width: 600px) {
+  body {
+    padding: 2rem;
+  }
+  main {
+    gap: 2rem;
+  }
+  .fab {
+    bottom: 2rem;
+    right: 2rem;
+  }
+}
