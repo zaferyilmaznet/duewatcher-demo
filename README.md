@@ -157,7 +157,7 @@ Accessible: Semantic HTML, keyboard-friendly, ARIA labels.
 
 ## 🧩 License
 
-MIT License © 2025 Zafer Yilmaz - zaferyilmaz.dev
+MIT License © 2025 Zafer Yilmaz - [zaferyilmaz.net](https://zaferyilmaz.net/)
 You’re free to use, modify, and distribute with attribution.
 
 ---
